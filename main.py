@@ -15,6 +15,7 @@ tokens = [
     'ASSIGN',
     'STRING',
     'ID',
+    'SEP',
     'B'
 ]
 
@@ -32,7 +33,8 @@ t_NUMBER = r'[0-9]+\s'
 t_INT = '[0-9]+'
 t_OP = r'\+|-'
 t_ASSIGN = r'='
-t_STRING = r'[a-z]+'
+t_STRING = r'"[a-z0-9]+"'
+t_SEP = r'\,'
 t_B =r'\n'
 
 

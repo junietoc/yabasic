@@ -13,20 +13,27 @@ tokens = [
     'OP',
     'VAR',
     'ASSIGN',
-    'ID'
+    'STRING',
+    'ID',
+    'B'
 ]
 
 reserved = {
-    'LET' :'DECL'
+    'LET' :'DECL',
+    'GOTO':'GOTO',
+    'END':'END',
+    'PRINT':'PRINT'
  }
 
 tokens += list(reserved.values())
 
 # Regular expression rules for simple tokens
 t_NUMBER = r'[0-9]+\s'
-t_INT = r'[0-9]+'
+t_INT = '[0-9]+'
 t_OP = r'\+|-'
 t_ASSIGN = r'='
+t_STRING = r'[a-z]+'
+t_B =r'\n'
 
 
 def t_VAR(t):
@@ -46,18 +53,27 @@ def t_error(t):
 
 
 # Build the lexer
-lexer = lex.lex()
+
 
 # Test it out
-data = "10 LET X = 4"
+data = ['10 LET X=1',
+'20 LET Y=X+3',
+'30 PRINT X,Y',
+'31 GOTO 38',
+'35 PRINT "hello"',
+'36 GOTO 40',
+'38 PRINT "paso1"',
+'39 GOTO 35',
+'40 END',
+]
 
 # Give the lexer some input
-lexer.input(data)
-
-
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
+for line in data:
+    lexer = lex.lex()
+    lexer.input(line)
+    # Tokenize
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break  # No more input
+        print(tok)

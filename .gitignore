@@ -1,2 +1,5 @@
 venv/
 .idea/
+MyLexer.py
+MyParser.py
+__pycache__/

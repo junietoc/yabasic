@@ -20,7 +20,7 @@ tokens = [
 ]
 
 reserved = {
-    'LET' :'DECL',
+    'LET' :'LET',
     'GOTO':'GOTO',
     'END':'END',
     'PRINT':'PRINT'
@@ -79,3 +79,4 @@ for line in data:
         if not tok:
             break  # No more input
         print(tok)
+

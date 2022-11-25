@@ -13,7 +13,7 @@ class basic_parser():
 
 
     def p_statement(self,p):
-        's : NUMBER LET VAR ASSIGN q'
+        's : NUMBER LET VAR ASSIGN INT'
         self.vars[p[3]] = p[5]
     def p_print(self,p):
         's : NUMBER PRINT VAR'

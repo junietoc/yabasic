@@ -1,0 +1,118 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    B
+    END
+    GOTO
+    ID
+    OP
+    SEP
+    STRING
+
+Grammar
+
+Rule 0     S' -> c
+Rule 1     c -> s
+Rule 2     s -> NUMBER LET VAR ASSIGN INT
+Rule 3     s -> NUMBER PRINT VAR
+
+Terminals, with rules where they appear
+
+ASSIGN               : 2
+B                    : 
+END                  : 
+GOTO                 : 
+ID                   : 
+INT                  : 2
+LET                  : 2
+NUMBER               : 2 3
+OP                   : 
+PRINT                : 3
+SEP                  : 
+STRING               : 
+VAR                  : 2 3
+error                : 
+
+Nonterminals, with rules where they appear
+
+c                    : 0
+s                    : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . c
+    (1) c -> . s
+    (2) s -> . NUMBER LET VAR ASSIGN INT
+    (3) s -> . NUMBER PRINT VAR
+
+    NUMBER          shift and go to state 3
+
+    c                              shift and go to state 1
+    s                              shift and go to state 2
+
+state 1
+
+    (0) S' -> c .
+
+
+
+state 2
+
+    (1) c -> s .
+
+    $end            reduce using rule 1 (c -> s .)
+
+
+state 3
+
+    (2) s -> NUMBER . LET VAR ASSIGN INT
+    (3) s -> NUMBER . PRINT VAR
+
+    LET             shift and go to state 4
+    PRINT           shift and go to state 5
+
+
+state 4
+
+    (2) s -> NUMBER LET . VAR ASSIGN INT
+
+    VAR             shift and go to state 6
+
+
+state 5
+
+    (3) s -> NUMBER PRINT . VAR
+
+    VAR             shift and go to state 7
+
+
+state 6
+
+    (2) s -> NUMBER LET VAR . ASSIGN INT
+
+    ASSIGN          shift and go to state 8
+
+
+state 7
+
+    (3) s -> NUMBER PRINT VAR .
+
+    $end            reduce using rule 3 (s -> NUMBER PRINT VAR .)
+
+
+state 8
+
+    (2) s -> NUMBER LET VAR ASSIGN . INT
+
+    INT             shift and go to state 9
+
+
+state 9
+
+    (2) s -> NUMBER LET VAR ASSIGN INT .
+
+    $end            reduce using rule 2 (s -> NUMBER LET VAR ASSIGN INT .)
+

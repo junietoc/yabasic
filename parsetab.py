@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : ss : NUMBER LET VAR ASSIGN INTs : NUMBER PRINT VAR'
+_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : svalue : INTterm : value OP valueexpr : values : NUMBER LET VAR ASSIGN exprs : NUMBER PRINT VAR'
     
-_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,7,9,],[0,-1,-3,-2,]),'LET':([3,],[4,]),'PRINT':([3,],[5,]),'VAR':([4,5,],[6,7,]),'ASSIGN':([6,],[8,]),'INT':([8,],[9,]),}
+_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,7,9,10,11,],[0,-1,-6,-5,-4,-2,]),'LET':([3,],[4,]),'PRINT':([3,],[5,]),'VAR':([4,5,],[6,7,]),'ASSIGN':([6,],[8,]),'INT':([8,],[11,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),}
+_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),'expr':([8,],[9,]),'value':([8,],[10,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,6 +28,9 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> c","S'",1,None,None,None),
   ('c -> s','c',1,'p_program','BasicParser.py',11),
-  ('s -> NUMBER LET VAR ASSIGN INT','s',5,'p_statement','BasicParser.py',16),
-  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',19),
+  ('value -> INT','value',1,'p_value','BasicParser.py',17),
+  ('term -> value OP value','term',3,'p_term','BasicParser.py',26),
+  ('expr -> value','expr',1,'p_expr','BasicParser.py',32),
+  ('s -> NUMBER LET VAR ASSIGN expr','s',5,'p_statement','BasicParser.py',36),
+  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',41),
 ]

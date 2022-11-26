@@ -6,7 +6,6 @@ Unused terminals:
     END
     GOTO
     ID
-    OP
     SEP
     STRING
 
@@ -14,30 +13,36 @@ Grammar
 
 Rule 0     S' -> c
 Rule 1     c -> s
-Rule 2     s -> NUMBER LET VAR ASSIGN INT
-Rule 3     s -> NUMBER PRINT VAR
+Rule 2     value -> INT
+Rule 3     term -> value OP value
+Rule 4     expr -> value
+Rule 5     s -> NUMBER LET VAR ASSIGN expr
+Rule 6     s -> NUMBER PRINT VAR
 
 Terminals, with rules where they appear
 
-ASSIGN               : 2
+ASSIGN               : 5
 B                    : 
 END                  : 
 GOTO                 : 
 ID                   : 
 INT                  : 2
-LET                  : 2
-NUMBER               : 2 3
-OP                   : 
-PRINT                : 3
+LET                  : 5
+NUMBER               : 5 6
+OP                   : 3
+PRINT                : 6
 SEP                  : 
 STRING               : 
-VAR                  : 2 3
+VAR                  : 5 6
 error                : 
 
 Nonterminals, with rules where they appear
 
 c                    : 0
+expr                 : 5
 s                    : 1
+term                 : 
+value                : 3 3 4
 
 Parsing method: LALR
 
@@ -45,8 +50,8 @@ state 0
 
     (0) S' -> . c
     (1) c -> . s
-    (2) s -> . NUMBER LET VAR ASSIGN INT
-    (3) s -> . NUMBER PRINT VAR
+    (5) s -> . NUMBER LET VAR ASSIGN expr
+    (6) s -> . NUMBER PRINT VAR
 
     NUMBER          shift and go to state 3
 
@@ -68,8 +73,8 @@ state 2
 
 state 3
 
-    (2) s -> NUMBER . LET VAR ASSIGN INT
-    (3) s -> NUMBER . PRINT VAR
+    (5) s -> NUMBER . LET VAR ASSIGN expr
+    (6) s -> NUMBER . PRINT VAR
 
     LET             shift and go to state 4
     PRINT           shift and go to state 5
@@ -77,42 +82,60 @@ state 3
 
 state 4
 
-    (2) s -> NUMBER LET . VAR ASSIGN INT
+    (5) s -> NUMBER LET . VAR ASSIGN expr
 
     VAR             shift and go to state 6
 
 
 state 5
 
-    (3) s -> NUMBER PRINT . VAR
+    (6) s -> NUMBER PRINT . VAR
 
     VAR             shift and go to state 7
 
 
 state 6
 
-    (2) s -> NUMBER LET VAR . ASSIGN INT
+    (5) s -> NUMBER LET VAR . ASSIGN expr
 
     ASSIGN          shift and go to state 8
 
 
 state 7
 
-    (3) s -> NUMBER PRINT VAR .
+    (6) s -> NUMBER PRINT VAR .
 
-    $end            reduce using rule 3 (s -> NUMBER PRINT VAR .)
+    $end            reduce using rule 6 (s -> NUMBER PRINT VAR .)
 
 
 state 8
 
-    (2) s -> NUMBER LET VAR ASSIGN . INT
+    (5) s -> NUMBER LET VAR ASSIGN . expr
+    (4) expr -> . value
+    (2) value -> . INT
 
-    INT             shift and go to state 9
+    INT             shift and go to state 11
 
+    expr                           shift and go to state 9
+    value                          shift and go to state 10
 
 state 9
 
-    (2) s -> NUMBER LET VAR ASSIGN INT .
+    (5) s -> NUMBER LET VAR ASSIGN expr .
 
-    $end            reduce using rule 2 (s -> NUMBER LET VAR ASSIGN INT .)
+    $end            reduce using rule 5 (s -> NUMBER LET VAR ASSIGN expr .)
+
+
+state 10
+
+    (4) expr -> value .
+
+    $end            reduce using rule 4 (expr -> value .)
+
+
+state 11
+
+    (2) value -> INT .
+
+    $end            reduce using rule 2 (value -> INT .)
 

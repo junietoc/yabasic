@@ -13,36 +13,42 @@ Grammar
 
 Rule 0     S' -> c
 Rule 1     c -> s
-Rule 2     value -> INT
-Rule 3     term -> value OP value
-Rule 4     expr -> value
-Rule 5     s -> NUMBER LET VAR ASSIGN expr
-Rule 6     s -> NUMBER PRINT VAR
+Rule 2     value -> VAR
+Rule 3     value -> INT
+Rule 4     term -> OP value
+Rule 5     term -> term term
+Rule 6     term -> empty
+Rule 7     expr -> value
+Rule 8     expr -> value term
+Rule 9     s -> NUMBER LET VAR ASSIGN expr
+Rule 10    empty -> <empty>
+Rule 11    s -> NUMBER PRINT VAR
 
 Terminals, with rules where they appear
 
-ASSIGN               : 5
+ASSIGN               : 9
 B                    : 
 END                  : 
 GOTO                 : 
 ID                   : 
-INT                  : 2
-LET                  : 5
-NUMBER               : 5 6
-OP                   : 3
-PRINT                : 6
+INT                  : 3
+LET                  : 9
+NUMBER               : 9 11
+OP                   : 4
+PRINT                : 11
 SEP                  : 
 STRING               : 
-VAR                  : 5 6
+VAR                  : 2 9 11
 error                : 
 
 Nonterminals, with rules where they appear
 
 c                    : 0
-expr                 : 5
+empty                : 6
+expr                 : 9
 s                    : 1
-term                 : 
-value                : 3 3 4
+term                 : 5 5 8
+value                : 4 7 8
 
 Parsing method: LALR
 
@@ -50,8 +56,8 @@ state 0
 
     (0) S' -> . c
     (1) c -> . s
-    (5) s -> . NUMBER LET VAR ASSIGN expr
-    (6) s -> . NUMBER PRINT VAR
+    (9) s -> . NUMBER LET VAR ASSIGN expr
+    (11) s -> . NUMBER PRINT VAR
 
     NUMBER          shift and go to state 3
 
@@ -73,8 +79,8 @@ state 2
 
 state 3
 
-    (5) s -> NUMBER . LET VAR ASSIGN expr
-    (6) s -> NUMBER . PRINT VAR
+    (9) s -> NUMBER . LET VAR ASSIGN expr
+    (11) s -> NUMBER . PRINT VAR
 
     LET             shift and go to state 4
     PRINT           shift and go to state 5
@@ -82,60 +88,168 @@ state 3
 
 state 4
 
-    (5) s -> NUMBER LET . VAR ASSIGN expr
+    (9) s -> NUMBER LET . VAR ASSIGN expr
 
     VAR             shift and go to state 6
 
 
 state 5
 
-    (6) s -> NUMBER PRINT . VAR
+    (11) s -> NUMBER PRINT . VAR
 
     VAR             shift and go to state 7
 
 
 state 6
 
-    (5) s -> NUMBER LET VAR . ASSIGN expr
+    (9) s -> NUMBER LET VAR . ASSIGN expr
 
     ASSIGN          shift and go to state 8
 
 
 state 7
 
-    (6) s -> NUMBER PRINT VAR .
+    (11) s -> NUMBER PRINT VAR .
 
-    $end            reduce using rule 6 (s -> NUMBER PRINT VAR .)
+    $end            reduce using rule 11 (s -> NUMBER PRINT VAR .)
 
 
 state 8
 
-    (5) s -> NUMBER LET VAR ASSIGN . expr
-    (4) expr -> . value
-    (2) value -> . INT
+    (9) s -> NUMBER LET VAR ASSIGN . expr
+    (7) expr -> . value
+    (8) expr -> . value term
+    (2) value -> . VAR
+    (3) value -> . INT
 
-    INT             shift and go to state 11
+    VAR             shift and go to state 9
+    INT             shift and go to state 12
 
-    expr                           shift and go to state 9
-    value                          shift and go to state 10
+    expr                           shift and go to state 10
+    value                          shift and go to state 11
 
 state 9
 
-    (5) s -> NUMBER LET VAR ASSIGN expr .
+    (2) value -> VAR .
 
-    $end            reduce using rule 5 (s -> NUMBER LET VAR ASSIGN expr .)
+    OP              reduce using rule 2 (value -> VAR .)
+    $end            reduce using rule 2 (value -> VAR .)
 
 
 state 10
 
-    (4) expr -> value .
+    (9) s -> NUMBER LET VAR ASSIGN expr .
 
-    $end            reduce using rule 4 (expr -> value .)
+    $end            reduce using rule 9 (s -> NUMBER LET VAR ASSIGN expr .)
 
 
 state 11
 
-    (2) value -> INT .
+    (7) expr -> value .
+    (8) expr -> value . term
+    (4) term -> . OP value
+    (5) term -> . term term
+    (6) term -> . empty
+    (10) empty -> .
 
-    $end            reduce using rule 2 (value -> INT .)
+  ! shift/reduce conflict for OP resolved as shift
+  ! reduce/reduce conflict for $end resolved using rule 7 (expr -> value .)
+    $end            reduce using rule 7 (expr -> value .)
+    OP              shift and go to state 14
 
+  ! OP              [ reduce using rule 10 (empty -> .) ]
+  ! $end            [ reduce using rule 10 (empty -> .) ]
+
+    term                           shift and go to state 13
+    empty                          shift and go to state 15
+
+state 12
+
+    (3) value -> INT .
+
+    OP              reduce using rule 3 (value -> INT .)
+    $end            reduce using rule 3 (value -> INT .)
+
+
+state 13
+
+    (8) expr -> value term .
+    (5) term -> term . term
+    (4) term -> . OP value
+    (5) term -> . term term
+    (6) term -> . empty
+    (10) empty -> .
+
+  ! shift/reduce conflict for OP resolved as shift
+  ! reduce/reduce conflict for $end resolved using rule 8 (expr -> value term .)
+    $end            reduce using rule 8 (expr -> value term .)
+    OP              shift and go to state 14
+
+  ! OP              [ reduce using rule 10 (empty -> .) ]
+  ! $end            [ reduce using rule 10 (empty -> .) ]
+
+    term                           shift and go to state 16
+    empty                          shift and go to state 15
+
+state 14
+
+    (4) term -> OP . value
+    (2) value -> . VAR
+    (3) value -> . INT
+
+    VAR             shift and go to state 9
+    INT             shift and go to state 12
+
+    value                          shift and go to state 17
+
+state 15
+
+    (6) term -> empty .
+
+    OP              reduce using rule 6 (term -> empty .)
+    $end            reduce using rule 6 (term -> empty .)
+
+
+state 16
+
+    (5) term -> term term .
+    (5) term -> term . term
+    (4) term -> . OP value
+    (5) term -> . term term
+    (6) term -> . empty
+    (10) empty -> .
+
+  ! shift/reduce conflict for OP resolved as shift
+  ! shift/reduce conflict for OP resolved as shift
+  ! reduce/reduce conflict for $end resolved using rule 5 (term -> term term .)
+    $end            reduce using rule 5 (term -> term term .)
+    OP              shift and go to state 14
+
+  ! OP              [ reduce using rule 5 (term -> term term .) ]
+  ! OP              [ reduce using rule 10 (empty -> .) ]
+  ! $end            [ reduce using rule 10 (empty -> .) ]
+
+    term                           shift and go to state 16
+    empty                          shift and go to state 15
+
+state 17
+
+    (4) term -> OP value .
+
+    OP              reduce using rule 4 (term -> OP value .)
+    $end            reduce using rule 4 (term -> OP value .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for OP in state 11 resolved as shift
+WARNING: shift/reduce conflict for OP in state 13 resolved as shift
+WARNING: shift/reduce conflict for OP in state 16 resolved as shift
+WARNING: shift/reduce conflict for OP in state 16 resolved as shift
+WARNING: reduce/reduce conflict in state 11 resolved using rule (expr -> value)
+WARNING: rejected rule (empty -> <empty>) in state 11
+WARNING: reduce/reduce conflict in state 13 resolved using rule (expr -> value term)
+WARNING: rejected rule (empty -> <empty>) in state 13
+WARNING: reduce/reduce conflict in state 16 resolved using rule (term -> term term)
+WARNING: rejected rule (empty -> <empty>) in state 16
+WARNING: Rule (empty -> <empty>) is never reduced

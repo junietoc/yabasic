@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : svalue : INTterm : value OP valueexpr : values : NUMBER LET VAR ASSIGN exprs : NUMBER PRINT VAR'
+_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : svalue : VAR\n                 | INTterm : OP value\n                | term term \n                | emptyexpr : value \n                | value terms : NUMBER LET VAR ASSIGN exprempty :s : NUMBER PRINT VAR'
     
-_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,7,9,10,11,],[0,-1,-6,-5,-4,-2,]),'LET':([3,],[4,]),'PRINT':([3,],[5,]),'VAR':([4,5,],[6,7,]),'ASSIGN':([6,],[8,]),'INT':([8,],[11,]),}
+_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,7,9,10,11,12,13,15,16,17,],[0,-1,-11,-2,-9,-7,-3,-8,-6,-5,-4,]),'LET':([3,],[4,]),'PRINT':([3,],[5,]),'VAR':([4,5,8,14,],[6,7,9,9,]),'ASSIGN':([6,],[8,]),'INT':([8,14,],[12,12,]),'OP':([9,11,12,13,15,16,17,],[-2,14,-3,14,-6,14,-4,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),'expr':([8,],[9,]),'value':([8,],[10,]),}
+_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),'expr':([8,],[10,]),'value':([8,14,],[11,17,]),'term':([11,13,16,],[13,16,16,]),'empty':([11,13,16,],[15,15,15,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,10 +27,15 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> c","S'",1,None,None,None),
-  ('c -> s','c',1,'p_program','BasicParser.py',11),
-  ('value -> INT','value',1,'p_value','BasicParser.py',17),
-  ('term -> value OP value','term',3,'p_term','BasicParser.py',26),
-  ('expr -> value','expr',1,'p_expr','BasicParser.py',32),
-  ('s -> NUMBER LET VAR ASSIGN expr','s',5,'p_statement','BasicParser.py',36),
-  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',41),
+  ('c -> s','c',1,'p_program','BasicParser.py',12),
+  ('value -> VAR','value',1,'p_value','BasicParser.py',18),
+  ('value -> INT','value',1,'p_value','BasicParser.py',19),
+  ('term -> OP value','term',2,'p_term','BasicParser.py',27),
+  ('term -> term term','term',2,'p_term','BasicParser.py',28),
+  ('term -> empty','term',1,'p_term','BasicParser.py',29),
+  ('expr -> value','expr',1,'p_expr','BasicParser.py',44),
+  ('expr -> value term','expr',2,'p_expr','BasicParser.py',45),
+  ('s -> NUMBER LET VAR ASSIGN expr','s',5,'p_statement','BasicParser.py',53),
+  ('empty -> <empty>','empty',0,'p_empty','BasicParser.py',57),
+  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',61),
 ]

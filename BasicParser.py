@@ -57,16 +57,29 @@ class basic_parser():
         'empty :'
         pass
 
+    
+    def p_varprint(self,p):
+        '''varprint : VAR SEP VAR
+                    | varprint SEP VAR'''
+        if(len(p)==4):     
+            p[0]=p[1]+","+p[3]
+        else:
+            p[0]=""
+            for i in range(3,len(p)):
+                p[0]=p[0]+p[i-2]+","+p[i]
+ 
+
+
     def p_print(self,p):
-        '''
-        s : NUMBER PRINT VAR
-          | NUMBER PRINT VAR SEP VAR
+        '''s : NUMBER PRINT VAR
+             | NUMBER PRINT varprint
         '''
         # printing just one variable
-        if(len(p)==4):
+        if(len(p[3])==1):
             print(self.vars[p[3]])
         else:
-            print(f"{self.vars[p[3]]},{self.vars[p[5]]}")
+            x=",".join([str(self.vars[p[3][e]]) for e in range(0,len(p[3]),2)])
+            print(x)
 
 
     def p_error(self,p):

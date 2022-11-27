@@ -58,8 +58,15 @@ class basic_parser():
         pass
 
     def p_print(self,p):
-        's : NUMBER PRINT VAR'
-        print(self.vars[p[3]])
+        '''
+        s : NUMBER PRINT VAR
+          | NUMBER PRINT VAR SEP VAR
+        '''
+        # printing just one variable
+        if(len(p)==4):
+            print(self.vars[p[3]])
+        else:
+            print(f"{self.vars[p[3]]},{self.vars[p[5]]}")
 
 
     def p_error(self,p):

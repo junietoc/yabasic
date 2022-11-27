@@ -3,6 +3,19 @@ import ply.yacc as yacc
 
 from utils import TOKENS, RESERVED
 
+
+def index_hasta_sep(cad,inicio):
+    ind=inicio
+    while(cad[ind]!="SEP"):
+        ind+=1
+    return ind 
+
+def index_hasta_coma(cad,inicio):
+    ind=inicio
+    while(ind<len(cad) and cad[ind]!=","):
+        ind+=1
+    return ind 
+
 class basic_parser():
     tokens = TOKENS
 
@@ -56,7 +69,7 @@ class basic_parser():
     def p_empty(self,p):
         'empty :'
         pass
-
+   
     
     def p_varprint(self,p):
         '''varprint : VAR SEP VAR
@@ -65,8 +78,11 @@ class basic_parser():
             p[0]=p[1]+","+p[3]
         else:
             p[0]=""
-            for i in range(3,len(p)):
-                p[0]=p[0]+p[i-2]+","+p[i]
+            for cont in range(len(p)):
+                for i in range(cont,index_hasta_sep(p,cont)):
+                    p[0]=p[0]+p[i]
+                p[0]=p[0]+","
+                cont=i+1    
  
 
 
@@ -75,10 +91,20 @@ class basic_parser():
              | NUMBER PRINT varprint
         '''
         # printing just one variable
-        if(len(p[3])==1):
+        if("," not in p[3]):
             print(self.vars[p[3]])
         else:
-            x=",".join([str(self.vars[p[3][e]]) for e in range(0,len(p[3]),2)])
+            varImprimir=list()
+            cont=0
+            while(cont<len(p[3])): 
+                variablelist=list()
+                for i in range(cont,index_hasta_coma(p[3],cont)): 
+                    a=p[3][i]
+                    variablelist.append(a)
+                variable="".join(e for e in variablelist)   
+                varImprimir.append(variable)
+                cont=index_hasta_coma(p[3],cont)+1
+            x=",".join([str(self.vars[e]) for e in varImprimir])
             print(x)
 
 

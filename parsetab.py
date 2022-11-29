@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : svalue : VAR\n                 | INTterm : OP value\n                | term term \n                | emptyexpr : value \n                | value terms : NUMBER LET VAR ASSIGN expr\n             | NUMBER GOTO INTs : NUMBER PRINT STRINGempty :varprint : VAR SEP VAR\n                    | varprint SEP VARs : NUMBER PRINT VAR\n             | NUMBER PRINT varprint'
+_lr_signature = 'ASSIGN B END GOTO ID INT LET NUMBER OP PRINT SEP STRING VARc : svalue : VAR\n                 | INTterm : OP value\n                | term term \n                | emptyexpr : value \n                | value terms : NUMBER LET VAR ASSIGN expr\n             | NUMBER GOTO INTs : NUMBER VAR ASSIGN exprs : NUMBER PRINT STRINGempty :varprint : VAR SEP VAR\n                    | varprint SEP VARs : NUMBER PRINT VAR\n             | NUMBER PRINT varprint'
     
-_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,8,9,10,11,15,16,17,18,19,20,21,23,24,25,],[0,-1,-10,-11,-15,-16,-2,-9,-7,-3,-13,-14,-8,-6,-5,-4,]),'LET':([3,],[4,]),'GOTO':([3,],[5,]),'PRINT':([3,],[6,]),'VAR':([4,6,12,13,14,22,],[7,10,15,19,20,15,]),'INT':([5,12,22,],[8,18,18,]),'STRING':([6,],[9,]),'ASSIGN':([7,],[12,]),'SEP':([10,11,19,20,],[13,14,-13,-14,]),'OP':([15,17,18,21,23,24,25,],[-2,22,-3,22,-6,22,-4,]),}
+_lr_action_items = {'NUMBER':([0,],[3,]),'$end':([1,2,10,11,12,13,15,16,17,18,21,22,24,25,26,27,28,],[0,-1,-10,-12,-16,-17,-2,-11,-7,-3,-9,-8,-6,-14,-15,-5,-4,]),'LET':([3,],[4,]),'GOTO':([3,],[6,]),'VAR':([3,4,7,9,14,19,20,23,],[5,8,12,15,15,25,26,15,]),'PRINT':([3,],[7,]),'ASSIGN':([5,8,],[9,14,]),'INT':([6,9,14,23,],[10,18,18,18,]),'STRING':([7,],[11,]),'SEP':([12,13,25,26,],[19,20,-14,-15,]),'OP':([15,17,18,22,24,27,28,],[-2,23,-3,23,-6,23,-4,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),'varprint':([6,],[11,]),'expr':([12,],[16,]),'value':([12,22,],[17,25,]),'term':([17,21,24,],[21,24,24,]),'empty':([17,21,24,],[23,23,23,]),}
+_lr_goto_items = {'c':([0,],[1,]),'s':([0,],[2,]),'varprint':([7,],[13,]),'expr':([9,14,],[16,21,]),'value':([9,14,23,],[17,17,28,]),'term':([17,22,27,],[22,27,27,]),'empty':([17,22,27,],[24,24,24,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -37,10 +37,11 @@ _lr_productions = [
   ('expr -> value term','expr',2,'p_expr','BasicParser.py',58),
   ('s -> NUMBER LET VAR ASSIGN expr','s',5,'p_statement','BasicParser.py',66),
   ('s -> NUMBER GOTO INT','s',3,'p_statement','BasicParser.py',67),
-  ('s -> NUMBER PRINT STRING','s',3,'p_print_string','BasicParser.py',75),
-  ('empty -> <empty>','empty',0,'p_empty','BasicParser.py',83),
-  ('varprint -> VAR SEP VAR','varprint',3,'p_varprint','BasicParser.py',88),
-  ('varprint -> varprint SEP VAR','varprint',3,'p_varprint','BasicParser.py',89),
-  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',103),
-  ('s -> NUMBER PRINT varprint','s',3,'p_print','BasicParser.py',104),
+  ('s -> NUMBER VAR ASSIGN expr','s',4,'p_reassign','BasicParser.py',74),
+  ('s -> NUMBER PRINT STRING','s',3,'p_print_string','BasicParser.py',81),
+  ('empty -> <empty>','empty',0,'p_empty','BasicParser.py',87),
+  ('varprint -> VAR SEP VAR','varprint',3,'p_varprint','BasicParser.py',92),
+  ('varprint -> varprint SEP VAR','varprint',3,'p_varprint','BasicParser.py',93),
+  ('s -> NUMBER PRINT VAR','s',3,'p_print','BasicParser.py',107),
+  ('s -> NUMBER PRINT varprint','s',3,'p_print','BasicParser.py',108),
 ]

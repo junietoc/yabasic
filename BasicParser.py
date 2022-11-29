@@ -70,14 +70,18 @@ class basic_parser():
         else:
             self.goto_index=int(p[3])
 
+    def p_reassign(self,p):
+        '''s : NUMBER VAR ASSIGN expr'''
+        if(p[2] in self.vars):
+            self.vars[p[2]]=p[4]
+        else:
+            print("La variable ",p[2]," no fue definida")    
      
     def p_print_string(self,p):
         '''s : NUMBER PRINT STRING'''
-        cadena=""
-        for letra in p[3]:
-            if(letra!='\"'):
-                cadena=cadena+letra
-        print(cadena)   
+        print(p[3][1:len(p[3])-1])   
+    
+
     
     def p_empty(self,p):
         'empty :'

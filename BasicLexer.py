@@ -12,7 +12,7 @@ class basic_lexer():
     t_B = r'\n'
 
     def t_STRING(self,t):
-        r'"([a-z|A-Z]+\s*[a-z|A-Z]*)+"'
+        r'"([a-z|A-Z|0-9]+\s*[a-z|A-Z|0-9]*)+"'
         reserved=RESERVED
         t.type = reserved.get(t.value,'STRING')    # Check for reserved words
         return t

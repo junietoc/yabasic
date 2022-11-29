@@ -14,9 +14,16 @@ class program:
             number_line=int(re.findall('[0-9]+\s', line)[0])
             self.agregar_lineas(line,number_line)
             line=input()
-        for e in self.lineas:
+        i=0    
+        while (i<len(self.lineas)):
+            e=self.lineas[i]
             if(e!=''):
                 self.myparser.parser.parse(input=e, lexer=self.mylexer.lexer)
+                if(self.myparser.goto_index!=-1):
+                    i=self.myparser.goto_index-1
+                    self.myparser.goto_index=-1
+            i+=1        
+
                 
 
 
@@ -30,5 +37,4 @@ class program:
 
 
 p=program()
-p.execute()            
-
+p.execute()

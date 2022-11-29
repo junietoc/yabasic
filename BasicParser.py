@@ -18,7 +18,7 @@ def index_hasta_coma(cad,inicio):
 
 class basic_parser():
     tokens = TOKENS
-
+    goto_index=-1
     
 
     def p_program(self,p):
@@ -63,14 +63,27 @@ class basic_parser():
 
 
     def p_statement(self,p):
-        's : NUMBER LET VAR ASSIGN expr'
-        self.vars[p[3]] = p[5]
+        '''s : NUMBER LET VAR ASSIGN expr
+             | NUMBER GOTO INT'''
+        if(len(p)==6):     
+            self.vars[p[3]] = p[5]
+        else:
+            self.goto_index=int(p[3])
+
+     
+    def p_print_string(self,p):
+        '''s : NUMBER PRINT STRING'''
+        cadena=""
+        for letra in p[3]:
+            if(letra!='\"'):
+                cadena=cadena+letra
+        print(cadena)   
     
     def p_empty(self,p):
         'empty :'
         pass
    
-    
+
     def p_varprint(self,p):
         '''varprint : VAR SEP VAR
                     | varprint SEP VAR'''
@@ -88,8 +101,7 @@ class basic_parser():
 
     def p_print(self,p):
         '''s : NUMBER PRINT VAR
-             | NUMBER PRINT varprint
-        '''
+             | NUMBER PRINT varprint'''
         # printing just one variable
         if("," not in p[3]):
             print(self.vars[p[3]])
@@ -106,7 +118,6 @@ class basic_parser():
                 cont=index_hasta_coma(p[3],cont)+1
             x=",".join([str(self.vars[e]) for e in varImprimir])
             print(x)
-
 
     def p_error(self,p):
         print(p)

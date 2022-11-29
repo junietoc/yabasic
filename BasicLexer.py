@@ -8,9 +8,15 @@ class basic_lexer():
     t_INT = '[0-9]+'
     t_OP = r'\+|-'
     t_ASSIGN = r'='
-    t_STRING = r'"[a-z0-9]+"'
     t_SEP = r'\,'
     t_B = r'\n'
+
+    def t_STRING(self,t):
+        r'"([a-z|A-Z]+\s*[a-z|A-Z]*)+"'
+        reserved=RESERVED
+        t.type = reserved.get(t.value,'STRING')    # Check for reserved words
+        return t
+
 
     def t_VAR(self,t):
         r'[A-Z]+'

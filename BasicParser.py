@@ -71,9 +71,12 @@ class basic_parser():
              | NUMBER GOTO INT'''
         if(len(p)==6):
             if (isinstance(p[5],int)):
-                self.vars[p[3]] = p[5]
+                self.vars[p[3]] = p[5] # es una expresion
             else:
-                self.p_error(p)
+                if p[5].isnumeric():
+                    self.vars[p[3]] = p[5]
+                else:
+                    self.p_error(p) #es un entero en forma de cadena
         else:
             self.goto_index=int(p[3])
 

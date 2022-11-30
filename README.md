@@ -38,4 +38,28 @@ Este comando sirve para saltar líneas de código hacia la inidicada con `GOTO`
 ```
 
 ### ¿Cómo instalar?
-`git clone https://github.com/junietoc/yabasic.git`
+Las siguientes instrucciones pueden ser exitosamente ejecutadas en `Git Bash`
+1. Clonar el repositorio
+```git clone https://github.com/junietoc/yabasic.git```
+2. Acceder a la carpeta del repositorio local
+```
+cd yabasic/
+```
+3. Crear ambiente virtual
+```
+pip3 -m venv myenv
+```
+
+4. Activar ambiente virtual
+```
+source myenv/bin/activate
+```
+
+5. Instalar paquetes necesarios
+```
+pip install -r requirements.txt
+```
+6. ***Ejecutar intérprete***
+```
+python Program.py
+```

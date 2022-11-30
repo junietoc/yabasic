@@ -70,7 +70,7 @@ class basic_parser():
         '''s : NUMBER LET VAR ASSIGN expr
              | NUMBER GOTO INT'''
         if(len(p)==6):
-            if (p[5].isnumeric()):
+            if (isinstance(p[5],int)):
                 self.vars[p[3]] = p[5]
             else:
                 self.p_error(p)
@@ -82,7 +82,7 @@ class basic_parser():
         if(p[2] in self.vars):
             self.vars[p[2]]=p[4]
         else:
-            print("La variable ",p[2]," no fue definida")    
+            self.p_error(p)
      
     def p_print_string(self,p):
         '''s : NUMBER PRINT STRING'''
@@ -136,8 +136,11 @@ class basic_parser():
             self.p_error(p)
 
     def p_error(self,p):
-        p[0]="error"
-        print("error")
+        try:
+            p[0] = f"error in line {p[1]}"
+
+        except:
+            print("Syntax Error")
 
     def __init__(self):
         self.parser = yacc.yacc(module=self)

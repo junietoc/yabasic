@@ -12,7 +12,9 @@ class program:
         line=input()
         while(line!="RUN"):
 
-            self.agregar_lineas(line)
+            result = self.agregar_lineas(line)
+            if result == "error":
+                break
             line=input()
         i=0
         while (i<len(self.lineas)):
@@ -22,8 +24,10 @@ class program:
                 if(self.myparser.goto_index!=-1):
                     i=self.myparser.goto_index-1
                     self.myparser.goto_index=-1
-                if (result == "error"):
-                    break
+                if result:
+                    if ("error" in result):
+                        print(result)
+                        break
             i+=1
 
 

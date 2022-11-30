@@ -37,6 +37,9 @@ Este comando sirve para saltar líneas de código hacia la inidicada con `GOTO`
 30 GOTO 10
 ```
 
+#### Para ejecutar
+Sólo hace falta escribir el comando `RUN` al finalizar de escribir las líneas de código 
+
 ### ¿Cómo instalar?
 Las siguientes instrucciones pueden ser exitosamente ejecutadas en `Git Bash`
 1. Clonar el repositorio

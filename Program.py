@@ -11,29 +11,38 @@ class program:
     def execute(self):
         line=input()
         while(line!="RUN"):
-            number_line=int(re.findall('[0-9]+\s', line)[0])
-            self.agregar_lineas(line,number_line)
+
+            self.agregar_lineas(line)
             line=input()
-        i=0    
+        i=0
         while (i<len(self.lineas)):
             e=self.lineas[i]
             if(e!=''):
-                self.myparser.parser.parse(input=e, lexer=self.mylexer.lexer)
+                result = self.myparser.parser.parse(input=e, lexer=self.mylexer.lexer)
                 if(self.myparser.goto_index!=-1):
                     i=self.myparser.goto_index-1
                     self.myparser.goto_index=-1
-            i+=1        
+                if (result == "error"):
+                    break
+            i+=1
 
-                
 
 
-    def agregar_lineas(self,linea,num):
-        if(num<len(self.lineas)):
-            self.lineas[num]=linea
+
+    def agregar_lineas(self,line):
+        list_found_num = re.findall('[0-9]+\s', line)
+        if len(list_found_num) > 0:
+            num = int(re.findall('[0-9]+\s', line)[0])
+
+            if (num < len(self.lineas)):
+                self.lineas[num] = line
+            else:
+                for i in range(len(self.lineas), num):
+                    self.lineas.append("")
+                self.lineas.append(line)
         else:
-            for i in range(len(self.lineas),num):
-                self.lineas.append("")
-            self.lineas.append(linea)    
+            print("error")
+            return "error"
 
 
 p=program()

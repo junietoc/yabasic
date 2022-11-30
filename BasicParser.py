@@ -56,17 +56,24 @@ class basic_parser():
     def p_expr(self,p):
         '''expr : value 
                 | value term'''
-        if(len(p)==2):
-            p[0] = p[1]
-        else:
-            p[0] = int(p[1])+int(p[2])    
+        try:
+            if (len(p) == 2):
+                p[0] = p[1]
+            else:
+                p[0] = int(p[1]) + int(p[2])
+        except:
+            self.p_error(p)
+
 
 
     def p_statement(self,p):
         '''s : NUMBER LET VAR ASSIGN expr
              | NUMBER GOTO INT'''
-        if(len(p)==6):     
-            self.vars[p[3]] = p[5]
+        if(len(p)==6):
+            if (p[5].isnumeric()):
+                self.vars[p[3]] = p[5]
+            else:
+                self.p_error(p)
         else:
             self.goto_index=int(p[3])
 
@@ -107,25 +114,30 @@ class basic_parser():
         '''s : NUMBER PRINT VAR
              | NUMBER PRINT varprint'''
         # printing just one variable
-        if("," not in p[3]):
-            print(self.vars[p[3]])
-        else:
-            varImprimir=list()
-            cont=0
-            while(cont<len(p[3])): 
-                variablelist=list()
-                for i in range(cont,index_hasta_coma(p[3],cont)): 
-                    a=p[3][i]
-                    variablelist.append(a)
-                variable="".join(e for e in variablelist)   
-                varImprimir.append(variable)
-                cont=index_hasta_coma(p[3],cont)+1
-            x=",".join([str(self.vars[e]) for e in varImprimir])
-            print(x)
+        try:
+            if ("," not in p[3]):
+                p[0] = str(self.vars[p[3]])
+                print(self.vars[p[3]])
+            else:
+                varImprimir = list()
+                cont = 0
+                while (cont < len(p[3])):
+                    variablelist = list()
+                    for i in range(cont, index_hasta_coma(p[3], cont)):
+                        a = p[3][i]
+                        variablelist.append(a)
+                    variable = "".join(e for e in variablelist)
+                    varImprimir.append(variable)
+                    cont = index_hasta_coma(p[3], cont) + 1
+                x = ",".join([str(self.vars[e]) for e in varImprimir])
+                p[0] = str(x)
+                print(x)
+        except:
+            self.p_error(p)
 
     def p_error(self,p):
-        print(p)
-        print("Syntax error in input!")
+        p[0]="error"
+        print("error")
 
     def __init__(self):
         self.parser = yacc.yacc(module=self)

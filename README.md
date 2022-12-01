@@ -66,3 +66,29 @@ pip install -r requirements.txt
 ```
 python Program.py
 ```
+### Algunos ejemplos listos para ejecutarse en YA' BASIC
+1. El clásico de futurama
+```
+10 PRINT "HOME"
+20 PRINT "SWEET"
+30 GOTO 10
+RUN
+```
+
+2. Asignaciones y reasignaciones
+```
+10 LET X = 1
+20 LET Y = 2
+30 X = X+Y
+40 PRINT Y,X
+RUN
+```
+
+3. Saltando impresiones
+```
+10 PRINT "HELLO WORLD"
+20 PRINT "SKIPPING THIS LINE"
+15 GOTO 30
+30 PRINT "THE END"
+RUN
+```

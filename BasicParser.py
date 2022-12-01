@@ -10,14 +10,17 @@ def index_hasta_sep(cad,inicio):
         ind+=1
     return ind 
 
+
 def index_hasta_coma(cad,inicio):
     ind=inicio
     while(ind<len(cad) and cad[ind]!=","):
         ind+=1
     return ind 
 
+
 class basic_parser():
     tokens = TOKENS
+
     goto_index=-1
     
 

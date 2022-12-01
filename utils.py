@@ -5,15 +5,12 @@ RAW_TOKENS = [
     'VAR',
     'ASSIGN',
     'STRING',
-    'ID',
-    'SEP',
-    'B'
+    'SEP'
 ]
 
 RESERVED = {
     'LET' :'LET',
     'GOTO':'GOTO',
-    'END':'END',
     'PRINT':'PRINT'
  }
 

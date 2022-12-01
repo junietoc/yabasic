@@ -1,11 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    B
-    END
-    ID
-
 Grammar
 
 Rule 0     S' -> c
@@ -30,10 +24,7 @@ Rule 17    s -> NUMBER PRINT varprint
 Terminals, with rules where they appear
 
 ASSIGN               : 9 11
-B                    : 
-END                  : 
 GOTO                 : 10
-ID                   : 
 INT                  : 3 10
 LET                  : 9
 NUMBER               : 9 10 11 12 16 17

@@ -9,7 +9,6 @@ class basic_lexer():
     t_OP = r'\+|-'
     t_ASSIGN = r'='
     t_SEP = r'\,'
-    t_B = r'\n'
 
     def t_STRING(self,t):
         r'"([a-z|A-Z|0-9]+\s*[a-z|A-Z|0-9]*)+"'

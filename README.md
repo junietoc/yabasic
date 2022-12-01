@@ -3,6 +3,10 @@ Este repositorio contiene el proyecto final para la clase de Compiladores 2022-I
 - Santiago Tovar Mosquera
 - Juliana Alejandra Nieto Cárdenas
 
+## Reporte escrito
+
+## Vídeo
+https://www.youtube.com/watch?v=xpdpSIRC8PQ
 ### ¿Cómo funciona este intérprete?
 YA' BASIC soporta funciones de asignación, aritmética básica con suma y resta, impresión de variables y la función insignia de algunos de los primeros lenguajes de programación: `GOTO`
 

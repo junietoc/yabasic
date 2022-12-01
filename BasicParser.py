@@ -113,6 +113,7 @@ class basic_parser():
                 self.vars[p[3]] = p[5]
             else:
                 # si el valor a asignar es un entero que se recibe como str
+
                 if p[5].isnumeric():
                     self.vars[p[3]] = p[5]
                 else:
@@ -126,22 +127,21 @@ class basic_parser():
     # Rule 11    s -> NUMBER VAR ASSIGN expr
     def p_reassign(self,p):
         '''s : NUMBER VAR ASSIGN expr'''
-
         if(p[2] in self.vars):
             # caso para asignar entero producto de operación aritmética
             if (isinstance(p[4], int)):
                 self.vars[p[2]]=p[4]
                 # si el valor a asignar es un entero que se recibe como str
+
+            else:
                 if p[4].isnumeric():
                     self.vars[p[2]] = p[4]
                 else:
                     # captura errores en caso que el valor sea no numérico
                     self.p_error(p)
-            else:
-                # captura errores en caso que el valor sea no numérico
-                self.p_error(p)
+
         else:
-            # captura errores en caso que el valor sea no numérico
+            # captura errores en caso que la variable no ha sido definida
             self.p_error(p)
 
     # función para s
